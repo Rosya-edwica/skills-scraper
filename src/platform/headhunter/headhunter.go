@@ -12,12 +12,20 @@ import (
 const GroupSize = 10
 
 func Go() {
+	defaultCity := models.City{
+		HH_ID:        0,
+		EDWICA_ID:    1,
+		RABOTA_RU_ID: "russia",
+		Name:         "Russia",
+	}
 	professions := mysql.GetProfessions()
 	if len(professions) == 0 {
 		checkErr(errors.New("Пустой список профессий. Нечего искать"))
 	}
 	for _, profession := range professions {
-		parseProfession(profession)
+		// parseProfession(profession)
+		GetVacanciesByQuery(defaultCity, profession.Title, profession.Id)
+
 	}
 
 }
