@@ -2,6 +2,8 @@ package headhunter
 
 import (
 	"fmt"
+	"sync"
+
 	"github.com/Rosya-edwica/skills-scraper/src/logger"
 	"github.com/Rosya-edwica/skills-scraper/src/models"
 	"github.com/tidwall/gjson"
@@ -32,8 +34,11 @@ func ParseVacanciesFromPage(url string, city_edwica int, id_profession int) {
 	}
 
 	items := gjson.Get(json, "items").Array()
+	var wg sync.WaitGroup
+	wg.Add(int(len(items)))
 	for _, item := range items {
-		scrapeVacancy(item.Get("url").String(), city_edwica, id_profession)
+		go scrapeVacancy(item.Get("url").String(), city_edwica, id_profession, &wg)
 	}
+	wg.Wait()
 	return
 }

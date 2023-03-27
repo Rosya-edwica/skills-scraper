@@ -2,15 +2,18 @@ package headhunter
 
 import (
 	"fmt"
-	"github.com/tidwall/gjson"
 	"strings"
+	"sync"
+
+	"github.com/tidwall/gjson"
 
 	"github.com/Rosya-edwica/skills-scraper/src/logger"
 	"github.com/Rosya-edwica/skills-scraper/src/models"
 	"github.com/Rosya-edwica/skills-scraper/src/mysql"
 )
 
-func scrapeVacancy(url string, city_edwica int, id_profession int) {
+func scrapeVacancy(url string, city_edwica int, id_profession int, wg *sync.WaitGroup) {
+	defer wg.Done()
 	var vacancy models.VacancySkills
 	checkCaptcha(url)
 	json, err := GetJson(url)
