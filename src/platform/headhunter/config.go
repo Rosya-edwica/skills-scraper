@@ -5,7 +5,7 @@ import (
 	"io"
 	"net/http"
 	"net/url"
-	"strconv"
+// 	"strconv"
 	"time"
 
 	"github.com/tidwall/gjson"
@@ -32,7 +32,7 @@ func CreateLink(name string, area int) (link string) {
 		"search_field": {search_field},
 		"per_page":     {per_page},
 		"text":         {name},
-		"area":         {strconv.Itoa(area)},
+// 		"area":         {strconv.Itoa(area)},
 	}
 	link = domain + params.Encode()
 	return
