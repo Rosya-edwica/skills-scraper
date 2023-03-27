@@ -35,7 +35,6 @@ func CreateLink(name string, area int) (link string) {
 		"area":         {strconv.Itoa(area)},
 	}
 	link = domain + params.Encode()
-	fmt.Println(link)
 	return
 
 }
