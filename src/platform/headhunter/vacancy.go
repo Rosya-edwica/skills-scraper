@@ -27,6 +27,7 @@ func scrapeVacancy(url string, city_edwica int, id_profession int, wg *sync.Wait
 	vacancy.Skills = getSkills(json)
 	vacancy.Title = gjson.Get(json, "name").String()
 	vacancy.Url = gjson.Get(json, "alternate_url").String()
+	vacancy.Experience = gjson.Get(json, "experience.name").String()
 	mysql.SaveOneVacancy(vacancy)
 	wg.Done()
 }
@@ -47,5 +48,16 @@ func getLanguages(vacancyJson string) (languages []string) {
 		level := item.Get("level.name").String()
 		languages = append(languages, fmt.Sprintf("%s (%s)", lang, level))
 	}
+	return
+}
+
+func GetExperience(vacancyId string) (experience string) {
+	url := "https://api.hh.ru/vacancies/" + vacancyId
+	json, err := GetJson(url)
+	if err != nil {
+		logger.Log.Printf("Ошибка при подключении к странице %s.\nТекст ошибки: %s", err, url)
+		return
+	}
+	experience = gjson.Get(json, "experience.name").String()
 	return
 }

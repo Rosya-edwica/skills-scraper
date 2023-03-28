@@ -6,6 +6,7 @@ type VacancySkills struct {
 	ProfessionId int
 	CityId       int
 	Skills       string
+	Experience   string
 }
 
 type City struct {
