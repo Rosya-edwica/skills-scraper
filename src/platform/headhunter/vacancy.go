@@ -13,12 +13,12 @@ import (
 )
 
 func scrapeVacancy(url string, city_edwica int, id_profession int, wg *sync.WaitGroup) {
-	defer wg.Done()
 	var vacancy models.VacancySkills
 	checkCaptcha(url)
 	json, err := GetJson(url)
 	if err != nil {
 		logger.Log.Printf("Ошибка при подключении к странице %s.\nТекст ошибки: %s", err, url)
+		wg.Done()
 		return
 	}
 
@@ -28,6 +28,7 @@ func scrapeVacancy(url string, city_edwica int, id_profession int, wg *sync.Wait
 	vacancy.Title = gjson.Get(json, "name").String()
 	vacancy.Url = gjson.Get(json, "alternate_url").String()
 	mysql.SaveOneVacancy(vacancy)
+	wg.Done()
 }
 
 func getSkills(vacancyJson string) string {

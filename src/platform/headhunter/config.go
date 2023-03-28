@@ -5,7 +5,7 @@ import (
 	"io"
 	"net/http"
 	"net/url"
-// 	"strconv"
+	"strconv"
 	"time"
 
 	"github.com/tidwall/gjson"
@@ -28,11 +28,20 @@ var headers = map[string]string{
 }
 
 func CreateLink(name string, area int) (link string) {
-	params := url.Values{
-		"search_field": {search_field},
-		"per_page":     {per_page},
-		"text":         {name},
-// 		"area":         {strconv.Itoa(area)},
+	var params url.Values
+	if area == 0 {
+		params = url.Values{
+			"search_field": {search_field},
+			"per_page":     {per_page},
+			"text":         {name},
+		}
+	} else {
+		params = url.Values{
+			"search_field": {search_field},
+			"per_page":     {per_page},
+			"text":         {name},
+			"area":         {strconv.Itoa(area)},
+		}
 	}
 	link = domain + params.Encode()
 	return
