@@ -25,6 +25,8 @@ func Go() {
 	for _, profession := range professions {
 		// parseProfession(profession)
 		GetVacanciesByQuery(defaultCity, profession.Title, profession.Id)
+		mysql.SetParsedStatusToProfession(profession.Id)
+		logger.Log.Printf("Профессия %s спарсена", profession.Title)
 
 	}
 
