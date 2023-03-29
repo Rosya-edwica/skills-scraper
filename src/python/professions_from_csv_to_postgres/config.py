@@ -1,39 +1,30 @@
 from typing import NamedTuple
+from dotenv import load_dotenv
+import os
+
+env_is_loaded = load_dotenv("../.env")
+
+COLUMN_LEVEL = 1
+COLUMN_PROFESSION = 3
+COLUMN_WEIGHT = 2
 
 class CsvProfession(NamedTuple):
     Name:   str
     Level:  int
+    Weigth: int
 
-COLUMN_GROUP = 2
-COLUMN_LEVEL = 4
-COLUMN_PROFESSION = 6
-
-
-profession_files = [
-    {
-        "file": "files/Туризм - Вариации названий.csv",
-        "groups": {
-                29,
-        }
-    },
-    {
-        "file": "files/Автомобилестроение.xlsx - Вариации названий.csv",
-        "groups": {
-                36,
-                9
-        }
-    },
-]
+class __Settings(NamedTuple):
+    Host: str
+    Port: str
+    Database: str
+    User: str
+    Password: str
 
 
-QUERY_CREATE_TABLE = f"""CREATE TABLE IF NOT EXISTS profession(
-    id SERIAL,
-    name TEXT NOT NULL,
-    level smallint NOT NULL,
-    parsed boolean NOT NULL DEFAULT false,
-
-    PRIMARY KEY(id)
-    )"""
-
-
-QUERY_INSERT_MANY = "INSERT INTO profession(name, level) VALUES(%s, %s)"
+SETTINGS = __Settings(
+    Host=os.getenv("MYSQL_HOST"),
+    Port=os.getenv("MYSQL_PORT"),
+    Database=os.getenv("MYSQL_DATABASE"),
+    User=os.getenv("MYSQL_USER"),
+    Password=os.getenv("MYSQL_PASSWORD"),
+)

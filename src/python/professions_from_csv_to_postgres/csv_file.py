@@ -2,16 +2,13 @@ import csv
 from config import *
 
 
-def get_professions_from_csv(csv_file: str = "Туризм - Вариации названий.csv", groups: list[int] = []) -> list[CsvProfession]:
+def get_professions_from_csv(csv_file: str):
     professions: list[CsvProfession] = []
-    
     with open(csv_file, mode="r", encoding="utf-8", newline="") as file:
         reader = csv.reader(file, delimiter=",")
         for index, row in enumerate(reader):
-            if index == 0 or int(row[COLUMN_GROUP]) not in groups: continue
-            professions.append(CsvProfession(
-                Name=row[COLUMN_PROFESSION].replace("\n", ""),
-                Level=int(row[COLUMN_LEVEL])
-            ))
+            if index == 0: continue
+            profession = CsvProfession(Name=row[COLUMN_PROFESSION].lower(), Level=row[COLUMN_LEVEL], Weigth=int(row[COLUMN_WEIGHT]))
+            if profession not in professions:
+                professions.append(profession)
     return professions
-
