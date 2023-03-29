@@ -11,10 +11,10 @@ func SaveOneVacancy(v models.VacancySkills) (err error) {
 	db := connect()
 	defer db.Close()
 
-	columns := buildPatternInsertValues(5)
-	smt := fmt.Sprintf(`INSERT INTO %s (title, city_id, position_id, skills, url) VALUES %s`, TableVacancy, columns)
+	columns := buildPatternInsertValues(6)
+	smt := fmt.Sprintf(`INSERT INTO %s (title, city_id, position_id, skills, url, experience) VALUES %s`, TableVacancy, columns)
 	tx, _ := db.Begin()
-	_, err = db.Exec(smt, v.Title, v.CityId, v.ProfessionId, v.Skills, v.Url)
+	_, err = db.Exec(smt, v.Title, v.CityId, v.ProfessionId, v.Skills, v.Url, v.Experience)
 	if err != nil {
 		logger.Log.Printf("Ошибка: Вакансия %s не была добавлена в базу - %s", v.Title, err)
 		err = tx.Commit()
